@@ -118,26 +118,26 @@
 
 				window.addEventListener( 'resize', onWindowResize, false );
 
-				// add GUI
+				add GUI
 
-				// gui = new DAT.GUI();
-				// gui.add(voxelConfig, 'orthographicProjection').onChange(function(){
+				 gui = new DAT.GUI();
+				 gui.add(voxelConfig, 'orthographicProjection').onChange(function(){
 			
-				//	if ( voxelConfig.orthographicProjection ) {
-				//		camera.toOrthographic();
-				//		camera.position.x = 1000;
-               			//camera.position.y = 707.106;
-                		//camera.position.z = 1000;
-				//		theta = 90;
-				//	} else {
-				//		camera.toPerspective();
-				//		camera.position.y = 800;
-				//	}
-				//});
+					if ( voxelConfig.orthographicProjection ) {
+						camera.toOrthographic();
+						camera.position.x = 1000;
+               			camera.position.y = 707.106;
+                		camera.position.z = 1000;
+						theta = 90;
+					} else {
+						camera.toPerspective();
+						camera.position.y = 800;
+					}
+				});
 
-				//gui.close();
+				gui.close();
 
-			//}
+			}
 
 			function onWindowResize() {
 

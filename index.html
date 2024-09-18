@@ -4,15 +4,62 @@
 		<title>BasicCraft</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<style>
-			body {
-				font-family: Monospace;
-				background-color: #f0f0f0;
-				margin: 0px;
-				overflow: hidden;
-			}
+	<style>
+body {
+	font-family: Monospace;
+	background-color: #f0f0f0;
+	margin: 0px;
+	overflow: hidden;
+}
 
-			#oldie { background-color: #ddd !important }
+#oldie { background-color: #ddd !important }
+
+/* Minecraft-like inventory bar */
+#item-bar {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	position: absolute;
+	bottom: 25px; /* Slightly above the bottom for better visibility */
+	left: 50%;
+	transform: translateX(-50%); /* Center the bar */
+	background-color: #666; /* Dark background to mimic Minecraft inventory */
+	padding: 5px;
+	border: 3px solid #666; /* Thicker border for the inventory bar */
+	border-radius: 10px; /* Rounded corners */
+	gap: 10px; /* Space between each slot */
+	
+}
+
+/* Minecraft-like inventory slots */
+#item {
+	width: 50px;
+	height: 50px;
+	background-color: #555; /* Darker background for each slot */
+	border: 2px solid #999; /* Light border to mimic slot edges */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); /* Slight shadow for a 3D effect */
+}
+
+/* Image styling to fit neatly within the slots */
+#item img {
+	width: 100%;
+	height: auto;
+}
+
+/* Mobile responsive design */
+@media (max-width: 600px) {
+	#item {
+		width: 40px; /* Smaller item size for mobile */
+		height: 40px;
+	}
+	#item-bar {
+	
+	}
+}
+
 		</style>
 	</head>
 	<body>
@@ -23,10 +70,82 @@
 		<script src="stats.min.js"></script>
 
 		<script src='DAT.GUI.min.js'></script>
-
+		<div id="item-bar">
+			<div id="item" data-texture="./resources/dirt.jpg"><img src="./resources/dirt.jpg" width="50" height="50"></div>
+			<div id="item" data-texture="./resources/cobblestone.jpg"><img src="./resources/cobblestone.jpg" width="50" height="50"></div>
+			<div id="item" data-texture="dirt.jpg"><img src="./resources/stone.jpg" width="50" height="50"></div>
+			<div id="item" data-texture="dirt.jpg"><img src="./resources/woodplanks.jpg" width="50" height="50"></div>
+			<div id="item" data-texture="dirt.jpg"><img src="dirt.jpg" width="50" height="50"></div>
+			<div id="item" data-texture="dirt.jpg"><img src="dirt.jpg" width="50" height="50"></div>
+			<div id="item" data-texture="dirt.jpg"><img src="dirt.jpg" width="50" height="50"></div>
+			<div id="item" data-texture="dirt.jpg"><img src="dirt.jpg" width="50" height="50"></div>
+			<div id="item" data-texture="dirt.jpg"><img src="dirt.jpg" width="50" height="50"></div>
+			<div id="item" data-texture="dirt.jpg"><img src="dirt.jpg" width="50" height="50"></div>
+			
+			
+		</div>
 		<script>
 
 			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+			let selectedTexture = 'dirt.jpg'; // Default texture
+			let cubes = []; // To store cube objects and their texture information
+			function placeCube(position, texture) {
+    			const voxel = new THREE.Mesh(cubeGeo, new THREE.MeshLambertMaterial({
+       			 map: THREE.ImageUtils.loadTexture(texture),
+      			 shading: THREE.FlatShading
+    		}));
+    			voxel.position.copy(position);
+   				 voxel.matrixAutoUpdate = false;
+  				  voxel.updateMatrix();
+   					 scene.add(voxel);
+
+    				// Store cube data
+  				 cubes.push({
+   			     mesh: voxel,        // The mesh itself
+      			  position: position.clone(),  // The position of the cube
+     			   texture: texture    // The texture used for this cube
+  				  });
+	}
+	
+	function onDocumentMouseDown(event) {
+    event.preventDefault();
+
+    const intersects = ray.intersectObjects(scene.children);
+
+    if (intersects.length > 0) {
+        intersector = getRealIntersector(intersects);
+
+        if (isCtrlDown) {
+            // Delete cube
+            if (intersector.object !== plane) {
+                scene.remove(intersector.object);
+                // Optionally remove from cubes array (not covered in this example)
+            }
+        } else {
+            // Place cube
+            intersector = getRealIntersector(intersects);
+            setVoxelPosition(intersector);
+            
+            // Place the cube with the currently selected texture
+            placeCube(voxelPosition, selectedTexture);
+        }
+    }
+}
+	// Function to change cube texture
+			function updateCubeTexture(texturePath) {
+    			cubeMaterial.map = THREE.ImageUtils.loadTexture(texturePath); // Update texture map
+    			cubeMaterial.needsUpdate = true; // Make sure the material updates
+			}
+
+			// Add event listeners to all items
+			document.querySelectorAll('#item').forEach(function (item) {
+    		item.addEventListener('click', function () {
+        	const texturePath = item.getAttribute('data-texture'); // Get the texture path
+        	selectedTexture = texturePath; // Set as the selected texture
+        	updateCubeTexture(texturePath); // Update the cube texture
+    			});
+			});
+
 
 			var container, stats;
 			var camera, scene, renderer;
@@ -39,9 +158,9 @@
 			var cubeGeo, cubeMaterial;
 			var i, intersector;
 
-			 var gui, voxelConfig = {
-				orthographicProjection: false
-			};
+			// var gui, voxelConfig = {
+			//	orthographicProjection: false
+			// };
 
 			init();
 			animate();
@@ -74,8 +193,7 @@
 				// cubes
 
 				cubeGeo = new THREE.CubeGeometry( 50, 50, 50 );
-				cubeMaterial = new THREE.MeshLambertMaterial( { color: 0x00ff80, ambient: 0x00ff80, shading: THREE.FlatShading, map: THREE.ImageUtils.loadTexture( "dirt.jpg" ) } );
-				cubeMaterial.color.setHSV( 0.1, 0.7, 1.0 );
+				cubeMaterial = new THREE.MeshLambertMaterial( { map: THREE.ImageUtils.loadTexture( "dirt.jpg" ) } );
 				cubeMaterial.ambient = cubeMaterial.color;
 
 				// picking
@@ -118,24 +236,24 @@
 
 				window.addEventListener( 'resize', onWindowResize, false );
 
-				add GUI
-
-				 gui = new DAT.GUI();
-				 gui.add(voxelConfig, 'orthographicProjection').onChange(function(){
+				//add GUI
+				//
+				// gui = new DAT.GUI();
+				// gui.add(voxelConfig, 'orthographicProjection').onChange(function(){
 			
-					if ( voxelConfig.orthographicProjection ) {
-						camera.toOrthographic();
-						camera.position.x = 1000;
-               			camera.position.y = 707.106;
-                		camera.position.z = 1000;
-						theta = 90;
-					} else {
-						camera.toPerspective();
-						camera.position.y = 800;
-					}
-				});
+				//	if ( voxelConfig.orthographicProjection ) {
+				//		camera.toOrthographic();
+				//		camera.position.x = 1000;
+               	//		camera.position.y = 707.106;
+                //		camera.position.z = 1000;
+				//		theta = 90;
+				//	} else {
+				//		camera.toPerspective();
+				//		camera.position.y = 800;
+				//	}
+			//	});
 
-				gui.close();
+			//	gui.close();
 
 			}
 
@@ -295,7 +413,7 @@
 				renderer.render( scene, camera );
 
 			}
-
+			
 		</script>
 
 	</body>

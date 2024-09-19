@@ -89,49 +89,8 @@ body {
 			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 			let selectedTexture = 'dirt.jpg'; // Default texture
 			let cubes = []; // To store cube objects and their texture information
-			function placeCube(position, texture) {
-    			const voxel = new THREE.Mesh(cubeGeo, new THREE.MeshLambertMaterial({
-       			 map: THREE.ImageUtils.loadTexture(texture),
-      			 shading: THREE.FlatShading
-    		}));
-    			voxel.position.copy(position);
-   				 voxel.matrixAutoUpdate = false;
-  				  voxel.updateMatrix();
-   					 scene.add(voxel);
-
-    				// Store cube data
-  				 cubes.push({
-   			     mesh: voxel,        // The mesh itself
-      			  position: position.clone(),  // The position of the cube
-     			   texture: texture    // The texture used for this cube
-  				  });
-	}
 	
-	function onDocumentMouseDown(event) {
-    event.preventDefault();
-
-    const intersects = ray.intersectObjects(scene.children);
-
-    if (intersects.length > 0) {
-        intersector = getRealIntersector(intersects);
-
-        if (isCtrlDown) {
-            // Delete cube
-            if (intersector.object !== plane) {
-                scene.remove(intersector.object);
-                // Optionally remove from cubes array (not covered in this example)
-            }
-        } else {
-            // Place cube
-            intersector = getRealIntersector(intersects);
-            setVoxelPosition(intersector);
-            
-            // Place the cube with the currently selected texture
-            placeCube(voxelPosition, selectedTexture);
-        }
-    }
-}
-	// Function to change cube texture
+			// Function to change cube texture
 			function updateCubeTexture(texturePath) {
     			cubeMaterial.map = THREE.ImageUtils.loadTexture(texturePath); // Update texture map
     			cubeMaterial.needsUpdate = true; // Make sure the material updates

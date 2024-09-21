@@ -56,7 +56,9 @@ body {
 		height: 40px;
 	}
 }
-
+#Welcome {
+	text-align: center;
+}
 		</style>
 	</head>
 	<body>
@@ -67,6 +69,10 @@ body {
 		<script src="stats.min.js"></script>
 
 		<script src='DAT.GUI.min.js'></script>
+		<dialog id="Welcome">
+			<p>Hello! Welcome to BasicCraft, Click a Block to Begin!</p>
+			<button onclick="Welcome.close()">X</button>
+		</dialog>
 		<div id="item-bar">
 			<div id="item" data-texture="./resources/dirt.jpg"><img src="./resources/dirt.jpg" width="50" height="50"></div>
 			<div id="item" data-texture="./resources/cobblestone.jpg"><img src="./resources/cobblestone.jpg" width="50" height="50"></div>
@@ -82,11 +88,12 @@ body {
 			
 		</div>
 		<script>
-
+			
 			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
-			let selectedTexture = 'dirt.jpg'; // Default texture
-			let cubes = []; // To store cube objects and their texture information
-	
+			let selectedTexture = "./resources/dirt.jpg"; // Default texture
+			
+			document.addEventListener('DOMContentLoaded', Welcome.showModal());
+
 			// Function to change cube texture
 			function updateCubeTexture(texturePath) {
     			cubeMaterial.map = THREE.ImageUtils.loadTexture(texturePath); // Update texture map
@@ -285,17 +292,22 @@ body {
 
 					} else {
 
+						if (Welcome.open) {
+							console.log("Welcome Modal is Open, No Object is placed")
+						} else {
 						intersector = getRealIntersector( intersects );
 						setVoxelPosition( intersector );
 
-						var voxel = new THREE.Mesh( cubeGeo, cubeMaterial );
+						var voxel = new THREE.Mesh( cubeGeo, cubeMaterial.clone() );
 						voxel.position.copy( voxelPosition );
 						voxel.matrixAutoUpdate = false;
 						voxel.updateMatrix();
 						scene.add( voxel );
 
-					}
+						}
 
+						}
+						
 				}
 			}
 

@@ -1,0 +1,54 @@
+body {
+	font-family: Monospace;
+	background-color: #f0f0f0;
+	margin: 0px;
+	overflow: hidden;
+}
+
+#oldie { background-color: #ddd !important }
+
+/* Minecraft-like inventory bar */
+#item-bar {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	position: absolute;
+	bottom: 25px; /* Slightly above the bottom for better visibility */
+	left: 50%;
+	transform: translateX(-50%); /* Center the bar */
+	background-color: #666; /* Dark background to mimic Minecraft inventory */
+	padding: 5px;
+	border: 3px solid #666; /* Thicker border for the inventory bar */
+	border-radius: 10px; /* Rounded corners */
+	gap: 10px; /* Space between each slot */
+	
+}
+
+/* Minecraft-like inventory slots */
+#item {
+	width: 50px;
+	height: 50px;
+	background-color: #555; /* Darker background for each slot */
+	border: 2px solid #999; /* Light border to mimic slot edges */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); /* Slight shadow for a 3D effect */
+}
+
+/* Image styling to fit neatly within the slots */
+#item img {
+	width: 100%;
+	height: auto;
+}
+
+/* Mobile responsive design */
+@media (max-width: 600px) {
+	#item {
+		width: 40px; /* Smaller item size for mobile */
+		height: 40px;
+	}
+}
+#Welcome {
+	text-align: center;
+}

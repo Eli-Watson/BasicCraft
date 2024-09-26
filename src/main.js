@@ -1,7 +1,15 @@
 if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 			let selectedTexture = "./resources/dirt.jpg"; // Default texture
-			
-			document.addEventListener('DOMContentLoaded', Welcome.showModal());
+			let welcome = 'ture'
+			// document.addEventListener("DOMContentLoaded", (event) => {
+				
+				
+			// 	localStorage.setItem('welcome?', 'true')
+				
+				
+				
+			// 	Welcome.showModal();
+			//   });
 
 			// Function to change cube texture
 			function updateCubeTexture(texturePath) {
@@ -30,9 +38,7 @@ if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 			var cubeGeo, cubeMaterial;
 			var i, intersector;
 
-			// var gui, voxelConfig = {
-			//	orthographicProjection: false
-			// };
+			
 
 			init();
 			animate();
@@ -108,24 +114,6 @@ if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
 				window.addEventListener( 'resize', onWindowResize, false );
 
-				//add GUI
-				//
-				// gui = new DAT.GUI();
-				// gui.add(voxelConfig, 'orthographicProjection').onChange(function(){
-			
-				//	if ( voxelConfig.orthographicProjection ) {
-				//		camera.toOrthographic();
-				//		camera.position.x = 1000;
-               	//		camera.position.y = 707.106;
-                //		camera.position.z = 1000;
-				//		theta = 90;
-				//	} else {
-				//		camera.toPerspective();
-				//		camera.position.y = 800;
-				//	}
-			//	});
-
-			//	gui.close();
 
 			}
 

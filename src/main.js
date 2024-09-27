@@ -1,28 +1,40 @@
 if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
-			let selectedTexture = "./resources/dirt.jpg"; // Default texture
-			let welcome = 'ture'
-			// document.addEventListener("DOMContentLoaded", (event) => {
+			let selectedTexture = "./resources/dirt.jpg"; // Default texture dosen't work. for future eli to fix
+			// let showWelcome = 'true' // varible to see whether or not to display welcome modal
+			
+			document.addEventListener("DOMContentLoaded", (event) => {
+			// Unfinished Finction to make the welcome screen not show up evrey time.
+			// function CheckWelcome() {
+			// 	if (welcome === true) {
+			// 		 welcome = false;
+			// 		Welcome.closeModal();
+			// 	}
 				
-				
-			// 	localStorage.setItem('welcome?', 'true')
-				
-				
-				
+			// }
+			// if (welcome == 'false')	{
+			// 	// localStorage.setItem('WelcomeModal', 'false')
+			// 	console.log('Welcome Modal Is disabled')
+			// }
+			
+			// else {
+			// 	// localStorage.setItem('WelcomeModal','true')
 			// 	Welcome.showModal();
-			//   });
+			// }
+			Welcome.showModal();
+			});
 
 			// Function to change cube texture
 			function updateCubeTexture(texturePath) {
-    			cubeMaterial.map = THREE.ImageUtils.loadTexture(texturePath); // Update texture map
-    			cubeMaterial.needsUpdate = true; // Make sure the material updates
+    			cubeMaterial.map = THREE.ImageUtils.loadTexture(texturePath);
+    			cubeMaterial.needsUpdate = true; 
 			}
 
 			// Add event listeners to all items
 			document.querySelectorAll('#item').forEach(function (item) {
     		item.addEventListener('click', function () {
-        	const texturePath = item.getAttribute('data-texture'); // Get the texture path
-        	selectedTexture = texturePath; // Set as the selected texture
-        	updateCubeTexture(texturePath); // Update the cube texture
+        	const texturePath = item.getAttribute('data-texture'); 
+        	selectedTexture = texturePath; 
+        	updateCubeTexture(texturePath); 
     			});
 			});
 
@@ -44,7 +56,7 @@ if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 			animate();
 
 			function init() {
-
+				// the writing on top
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
 
@@ -194,7 +206,7 @@ if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 						} else {
 						intersector = getRealIntersector( intersects );
 						setVoxelPosition( intersector );
-
+						// note self, if the material is not material.clone() the texture changer funtion changes all the cubes, placed and unplaced
 						var voxel = new THREE.Mesh( cubeGeo, cubeMaterial.clone() );
 						voxel.position.copy( voxelPosition );
 						voxel.matrixAutoUpdate = false;
@@ -228,7 +240,7 @@ if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
 				}
 			}
-
+			// not sure if this works anymore. or if its just me
 			function save() {
 
 				window.open( renderer.domElement.toDataURL('image/png'), 'mywindow' );

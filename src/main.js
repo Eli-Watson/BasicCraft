@@ -1,4 +1,8 @@
-if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+			// need to dos:
+			//-make mobile work better
+			// add more texture and possibly a bigger menu
+			
+			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 			let selectedTexture = "./resources/dirt.jpg"; // Default texture dosen't work. for future eli to fix
 			// let showWelcome = 'true' // varible to see whether or not to display welcome modal
 			

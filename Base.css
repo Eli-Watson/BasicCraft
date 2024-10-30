@@ -5,6 +5,15 @@ body {
 	overflow: hidden;
 }
 
+#controls {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+	top: 22px;
+	bottom: 25px; /* Slightly above the bottom for better visibility */
+	left: 50%;
+}
+
 #oldie { background-color: #ddd !important }
 
 /* Minecraft-like inventory bar */

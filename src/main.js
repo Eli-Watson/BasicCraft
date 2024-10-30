@@ -58,12 +58,52 @@
 
 			init();
 			animate();
+			onWindowResize();
 
+			// Add touch support for movement and clicking
+			document.addEventListener('touchstart', onDocumentTouchStart, false);
+
+			// Add event listener to call onWindowResize when the window resizes
+			window.addEventListener('resize', onWindowResize, false);
+			
+			document.getElementById("rotateLeft").addEventListener("click", function () {
+				theta -= 10; // Adjust rotation speed if needed
+				updateCameraPosition();
+			});
+			
+			document.getElementById("rotateRight").addEventListener("click", function () {
+				theta += 10;
+				updateCameraPosition();
+			});
+			
+			// Function to update camera position based on theta for rotation
+			function updateCameraPosition() {
+				camera.position.x = 1400 * Math.sin(theta * Math.PI / 360);
+				camera.position.z = 1400 * Math.cos(theta * Math.PI / 360);
+				camera.lookAt(scene.position);
+			}
+			
+
+
+			// Adjust camera and renderer size on window resize
+			function onWindowResize() {
+    			camera.aspect = window.innerWidth / window.innerHeight;
+    			camera.updateProjectionMatrix();
+    			renderer.setSize(window.innerWidth, window.innerHeight);
+			}
+
+			// Add touch support for mobile devices
+			function onDocumentTouchStart(event) {
+   				event.preventDefault();
+ 			    const touch = event.touches[0];
+    			mouse2D.x = (touch.clientX / window.innerWidth) * 2 - 1;
+    			mouse2D.y = -(touch.clientY / window.innerHeight) * 2 + 1;
+			}
+			
 			function init() {
 				// the writing on top
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
-
 				var info = document.createElement( 'div' );
 				info.style.position = 'absolute';
 				info.style.top = '10px';
